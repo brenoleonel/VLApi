@@ -1,10 +1,6 @@
 import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
 
-export class UserAdminDto {
-  @IsString()
-  @IsNotEmpty({ message: 'O campo Nome é obrigatório.' })
-  Nome: string;
-
+export class LoginUserAdminDto {
   @IsEmail({}, { message: 'O e-mail informado não é válido.' })
   @IsNotEmpty({ message: 'O e-mail é obrigatório.' })
   Email: string;

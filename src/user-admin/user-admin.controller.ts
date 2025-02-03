@@ -12,6 +12,8 @@ import {
 import { UserAdminService } from './user-admin.service';
 import { UserAdminDto } from './dto/create-userAdmin.dto';
 import * as bcrypt from 'bcrypt';
+import { sign } from 'jsonwebtoken';
+import { LoginUserAdminDto } from './dto/login-userAdmin.dto';
 
 @Controller('user-admin')
 export class UserAdminController {
@@ -30,7 +32,7 @@ export class UserAdminController {
 
   @Post('/login')
   @HttpCode(200)
-  async loginUser(@Body() user: UserAdminDto) {
+  async loginUser(@Body() user: LoginUserAdminDto) {
     const userExist = await this.userService.findUserByEmail(user.Email);
     if (!userExist) {
       throw new BadRequestException('Email ou senha invalidos');
@@ -40,7 +42,13 @@ export class UserAdminController {
     if (!userValid) {
       throw new BadRequestException('Email ou senha invalidos');
     }
+
+    const token = sign({ id: userExist.id }, process.env.SECRET_JWT || '', {
+      expiresIn: '1h',
+    });
+
     return {
+      token,
       user: {
         id: userExist.id,
         nome: userExist.Nome,
