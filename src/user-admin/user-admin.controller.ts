@@ -8,12 +8,14 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { UserAdminService } from './user-admin.service';
 import { UserAdminDto } from './dto/create-userAdmin.dto';
 import * as bcrypt from 'bcrypt';
 import { sign } from 'jsonwebtoken';
 import { LoginUserAdminDto } from './dto/login-userAdmin.dto';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('user-admin')
 export class UserAdminController {
@@ -57,6 +59,7 @@ export class UserAdminController {
     };
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('/allusers/:id?')
   @HttpCode(200)
   async findUser(@Param('id') id?: string) {
@@ -83,6 +86,7 @@ export class UserAdminController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put('/:id')
   @HttpCode(200)
   async updatedUserAdmin(@Param('id') id: string, @Body() user: UserAdminDto) {
@@ -98,6 +102,7 @@ export class UserAdminController {
     };
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete('/:id')
   @HttpCode(200)
   async deleteUserAdmin(@Param('id') id: string) {
