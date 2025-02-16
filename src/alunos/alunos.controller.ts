@@ -25,25 +25,42 @@ export class AlunosController {
     return novoAluno;
   }
 
-  @Get('/allalunos/:id?')
+  @Get('/allalunos')
   @HttpCode(200)
-  async findAluno(@Param('id') id?: string) {
-    if (id) {
-      const findAluno = await this.alunoService.findAlunoById(id);
-      if (!findAluno) {
-        throw new BadRequestException('Aluno nao encontrado');
-      }
-      return {
-        message: 'Aluno encontrado:',
-        Aluno: findAluno,
-      };
-    } else {
-      const allAlunos = await this.alunoService.findAllAlunos();
-      return {
-        message: 'Todos os Formandos cadastrados:',
-        Alunos: allAlunos,
-      };
+  async findAllAlunos() {
+    const allAlunos = await this.alunoService.findAllAlunos();
+    return {
+      message: 'Todos os Formandos cadastrados:',
+      Alunos: allAlunos,
+    };
+  }
+
+  @Get('/:id')
+  @HttpCode(200)
+  async findAluno(@Param('id') id: string) {
+    const findAluno = await this.alunoService.findAlunoById(id);
+    if (!findAluno) {
+      throw new BadRequestException('Aluno não encontrado');
     }
+    return {
+      message: 'Aluno encontrado:',
+      Aluno: findAluno,
+    };
+  }
+
+  @Get('/useradm/:userAdmId')
+  @HttpCode(200)
+  async findAlunosByUserAdm(@Param('userAdmId') userAdmId: string) {
+    const alunos = await this.alunoService.findAlunosByUserAdm(userAdmId);
+    if (!alunos.length) {
+      throw new BadRequestException(
+        'Nenhum aluno encontrado para este UserAdm.',
+      );
+    }
+    return {
+      message: 'Alunos encontrados:',
+      alunos,
+    };
   }
 
   @Put('/:id')

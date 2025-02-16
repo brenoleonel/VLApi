@@ -13,4 +13,8 @@ export class UserAdminDto {
   @MinLength(6, { message: 'A senha deve ter no mínimo 6 caracteres.' })
   @IsNotEmpty({ message: 'A senha é obrigatória.' })
   Senha: string;
+
+  @IsString()
+  @IsNotEmpty()
+  userAdmId: string;
 }

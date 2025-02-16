@@ -28,6 +28,14 @@ export class AlunosService {
     return alunoId;
   }
 
+  async findAlunosByUserAdm(userAdmId: string) {
+    return this.prisma.alunos.findMany({
+      where: {
+        userAdmId, // Filtra os alunos que pertencem ao UserAdm
+      },
+    });
+  }
+
   async updateAluno(user: Partial<AlunosDto>, id: string) {
     const alunoUpdate = await this.prisma.alunos.update({
       where: { id },

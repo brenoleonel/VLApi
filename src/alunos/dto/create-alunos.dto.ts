@@ -20,7 +20,7 @@ export class AlunosDto {
   Nome: string;
 
   @IsOptional()
-  @Length(11, 11, { message: 'O CPF deve ter 11 dígitos.' })
+  @Length(14, 14, { message: 'O CPF deve ter 11 dígitos.' })
   Cpf?: string;
 
   @IsOptional()
